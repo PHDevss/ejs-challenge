@@ -14,11 +14,20 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get('/', function (req , res) {
-    res.render('home', {homeStartingContent: homeStartingContent, posts: posts})  
+    res.render('home', {homeStartingContent: homeStartingContent})  
 })
+
+app.get('/posts', function (req , res) {
+    res.render('posts', {posts: posts})  
+})
+app.get('/posts/:postName', function (req , res) {
+    console.log(req.params.par1)
+})
+
 app.get('/contact', function (req , res) {
     res.render('contact', {contactContent: contactContent})  
 })
+
 app.get('/about', function (req , res) {
     res.render('about', {aboutContent: aboutContent})  
 })
@@ -26,14 +35,13 @@ app.get('/about', function (req , res) {
 app.get('/compose', function (req , res) {
     res.render('compose')  
 })
-
 app.post('/compose', function (req , res) {
     const post = {
         title: req.body.postTitle,
         content: req.body.postBody
     }
     posts.push(post)
-    res.redirect('/')
+    res.redirect('/posts')
 })
 
 
