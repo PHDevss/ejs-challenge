@@ -33,3 +33,13 @@
 	font-size: 12px;
   color: #fff;
 }
+
+.postTittle {
+    text-decoration: none;
+    color: black;
+}
+
+.postTittle:hover, .postTittle:visited, .postTittle:active, .postTittle:link  {
+    text-decoration: none;
+    color: black;
+}
