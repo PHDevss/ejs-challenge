@@ -50,7 +50,7 @@ app.post('/compose', function (req , res) {
     const post = {
         title: req.body.postTitle,
         content: req.body.postBody,
-        postUrl: `/posts/${_.kebabCase(_.lowerCase(req.body.postTitle))}`
+        postUrl: `/posts/${_.kebabCase(_.lowerCase(req.body.postTitle))}`,
     }
     posts.push(post)
     res.redirect('/posts')

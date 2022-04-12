@@ -6,7 +6,7 @@
 <% } else { %>
     <% posts.forEach(function (post) { %>
         <a href= <%= post.postUrl %> class='postTittle'> <h2> <%= post.title %> </h2> </a>   
-        <p> <%= post.content %> </p>  
+        <p> <%= post.content.slice(0,100)+'...' %> </p>  
     <% }) %>
 <% } %>
 
