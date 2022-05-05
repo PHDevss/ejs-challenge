@@ -5,7 +5,7 @@
     <h2>Crie um post no menu Compose.</h2>
 <% } else { %>
     <% posts.forEach(function (post) { %>
-        <a href= <%= post.postUrl %> class='postTittle'> <h2> <%= post.title %> </h2> </a>   
+        <a href= <%="/posts/"+ post._id %> class='postTittle'> <h2> <%= post.title %> </h2> </a>   
         <p> <%= post.content.slice(0,100)+'...' %> </p>  
     <% }) %>
 <% } %>

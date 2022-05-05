@@ -22,33 +22,56 @@ async function main() {
   await mongoose.connect('mongodb://localhost:27017/blogDB', {useNewUrlParser: true}); //Nome da DATABASE
 }
 // Conectando com o banco de dados - Fim
+
 // Criando Schema do banco de dados - Inicio
 const postsSchema = new mongoose.Schema({
     title: String,
     content: String
 });
 // Criando Schema do banco de dados - Fim
+
 // Compilando Schema em Modelo no banco de dados - Inicio
 const Post = mongoose.model('Post', postsSchema); //Nome da COLLECTION
 // Compilando Schema em Modelo no banco de dados - Fim
+
 app.get('/', function (req , res) {
     res.render('home', {homeStartingContent: homeStartingContent})  
 })
 
 app.get('/posts', function (req , res) {
-    res.render('posts', {posts: posts})  
+
+    // RECEBENDO ITENS DO BANCO DE DADOS - Ínício
+    Post.find({}, function (err, results) {
+        if (!err) {
+            console.log(results)
+            res.render('posts', {posts: results})
+        }
+    })
+    // RECEBENDO ITENS DO BANCO DE DADOS - Fim
 })
-app.get('/posts/:postName', function (req , res) {
+app.get('/posts/:postID', function (req , res) {
     
-    posts.forEach(function(post){
-        if(req.params.postName == _.kebabCase(_.lowerCase(post.title))) {
+    Post.findOne({_id: req.params.postID}, function (err, result) {
+        if(!err) {
+            console.log(result)
             const htmlPost = {
-                titleHTML : post.title,
-                contentHTML : post.content
+                titleHTML : result.title,
+                contentHTML : result.content
             } 
             res.render('post', {htmlPost: htmlPost})
         }
     })
+
+
+    // posts.forEach(function(post){
+    //     if(req.params.postName == _.kebabCase(_.lowerCase(post.title))) {
+    //         const htmlPost = {
+    //             titleHTML : post.title,
+    //             contentHTML : post.content
+    //         } 
+    //         res.render('post', {htmlPost: htmlPost})
+    //     }
+    // })
 })
 
 app.get('/contact', function (req , res) {
@@ -69,13 +92,20 @@ app.post('/compose', function (req , res) {
     //     content: req.body.postBody,
     //     postUrl: `/posts/${_.kebabCase(_.lowerCase(req.body.postTitle))}`,
     // }
-    const Post = new Post({
+
+    // CRIANDO ITEM E ENVIANDO AO BANCO DE DADOS - Ínício
+    const newPost = new Post({
         title: req.body.postTitle,
         content: req.body.postBody
     })
-    Post.save()
+    // CRIANDO ITEM E ENVIANDO AO BANCO DE DADOS - Fim
+    newPost.save(function (err) {
+        if (!err) {
+            res.redirect('/posts')
+        }
+    })
     // posts.push(post)
-    res.redirect('/posts')
+    // res.redirect('/posts')
 })
 
 
